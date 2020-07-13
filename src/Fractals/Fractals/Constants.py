@@ -1,4 +1,4 @@
-CANVAS_WIDTH = 500
+CANVAS_WIDTH = 1000
 CANVAS_HEIGHT = 500
 BUTTON_HEIGHT = 50
 
@@ -34,7 +34,7 @@ LARGE_BUTTON_HEIGHT = BUTTON_HEIGHT
 LARGE_BUTTON_WIDTH = (WINDOW_WIDTH - (SMALL_BUTTON_WIDTH * TOTAL_SMALL_BUTTONS)) / TOTAL_LARGE_BUTTONS
 
 MANDLEBROT_BUTTON_LABEL = "Mandlebrot"
-ZOOM_DEFAULT_BUTTON_LABEL = "Zoom"
+ZOOM_BUTTON_LABEL = "Zoom Steps: {0}"
 ZOOM_INC_BUTTON_LABEL = "+"
 ZOOM_DEC_BUTTON_LABEL = "-"
 
@@ -45,6 +45,13 @@ BUTTON_LABEL_COLOR = WHITE
 BUTTON_BORDER_SIZE = 2
 
 BUTTON_FONT_SIZE = 20
+
+###############################################
+# Zooming
+###############################################
+
+MIN_ZOOM_STEPS = 1
+MAX_ZOOM_STEPS = 100
 
 ###############################################
 # PyGame
