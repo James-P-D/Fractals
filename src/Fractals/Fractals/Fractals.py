@@ -18,15 +18,55 @@ dec_zoom_button = Button((SMALL_BUTTON_WIDTH * 1) + (LARGE_BUTTON_WIDTH * TOTAL_
 ###############################################
 
 def game_loop():
+    
+    def flip_pixel(x, y):
+        (r, g, b, a) = screen.get_at((x, y))
+        screen.set_at((x, y), (255-r, 255-g, 255-b, a))
+
     game_exit = False
     clock = pygame.time.Clock()
+
+    selecting_zoom_area = False
+    (x1, y1, x2, y2) = (-1, -1, -1, -1)
+
     while not game_exit:
+        pygame.mouse.get_pos()
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_exit = True;
+            elif (event.type == pygame.MOUSEMOTION) and (selecting_zoom_area):
+                (new_x2, new_y2) = pygame.mouse.get_pos()            
+    
+                x_inc = 1 if x1 < x2 else -1
+                y_inc = 1 if y1 < y2 else -1
+                
+                for x in range(x1, x2, x_inc):
+                    flip_pixel(x, y1)
+                    flip_pixel(x, y2)
+                for y in range(y1, y2, y_inc):
+                    flip_pixel(x1, y)
+                    flip_pixel(x2, y)
+
+                x2 = new_x2
+                y2 = new_y2
+    
+                x_inc = 1 if x1 < x2 else -1
+                y_inc = 1 if y1 < y2 else -1
+                for x in range(x1, x2, x_inc):
+                    flip_pixel(x, y1)
+                    flip_pixel(x, y2)
+                for y in range(y1, y2, y_inc):
+                    flip_pixel(x1, y)
+                    flip_pixel(x2, y)
+
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 (mouse_x, mouse_y) = pygame.mouse.get_pos()
-                if (mandlebrot_button.is_over(mouse_x, mouse_y)):
+                if (mouse_y < CANVAS_HEIGHT):
+                    print("setting x and y")
+                    x1 = x2 = mouse_x
+                    y1 = y2 = mouse_y                    
+                    selecting_zoom_area = True
+                elif (mandlebrot_button.is_over(mouse_x, mouse_y)):
                     mandlebrot_button_clicked()
                 elif (zoom_button.is_over(mouse_x, mouse_y)):
                     zoom_button_clicked()
@@ -34,6 +74,9 @@ def game_loop():
                     inc_zoom_button_clicked()
                 elif (dec_zoom_button.is_over(mouse_x, mouse_y)):
                     dec_zoom_button_clicked()
+            elif event.type == pygame.MOUSEBUTTONUP:
+                if (selecting_zoom_area):
+                    selecting_zoom_area = False
 
         pygame.display.update()
         clock.tick(CLOCK_TICK)
@@ -60,7 +103,6 @@ def zoom_button_clicked():
 def inc_zoom_button_clicked():
     global zoom_steps
     zoom_steps = min(zoom_steps + 1, MAX_ZOOM_STEPS)
-    print(f"{zoom_steps}")
     zoom_button.set_label(ZOOM_BUTTON_LABEL.format(zoom_steps))
     zoom_button.draw(screen)
 
@@ -71,7 +113,6 @@ def inc_zoom_button_clicked():
 def dec_zoom_button_clicked():
     global zoom_steps
     zoom_steps = max(zoom_steps - 1, MIN_ZOOM_STEPS)
-    print(f"{zoom_steps}")
     zoom_button.set_label(ZOOM_BUTTON_LABEL.format(zoom_steps))
     zoom_button.draw(screen)
 
