@@ -19,9 +19,19 @@ dec_zoom_button = Button((SMALL_BUTTON_WIDTH * 1) + (LARGE_BUTTON_WIDTH * TOTAL_
 
 def game_loop():
     
-    def flip_pixel(x, y):
-        (r, g, b, a) = screen.get_at((x, y))
-        screen.set_at((x, y), (255-r, 255-g, 255-b, a))
+    def flip_rect(x1, x2, y1, y2, x_inc, y_inc):
+        
+        def flip_pixel(x, y):
+            (r, g, b, a) = screen.get_at((x, y))
+            screen.set_at((x, y), (255-r, 255-g, 255-b, a))
+
+        for x in range(x1, x2, x_inc):
+            flip_pixel(x, y1)
+            flip_pixel(x, y2)
+        for y in range(y1, y2, y_inc):
+            flip_pixel(x1, y)
+            flip_pixel(x2, y)
+
 
     game_exit = False
     clock = pygame.time.Clock()
@@ -34,35 +44,24 @@ def game_loop():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 game_exit = True;
-            elif (event.type == pygame.MOUSEMOTION) and (selecting_zoom_area):
-                (new_x2, new_y2) = pygame.mouse.get_pos()            
-    
-                x_inc = 1 if x1 < x2 else -1
-                y_inc = 1 if y1 < y2 else -1
-                
-                for x in range(x1, x2, x_inc):
-                    flip_pixel(x, y1)
-                    flip_pixel(x, y2)
-                for y in range(y1, y2, y_inc):
-                    flip_pixel(x1, y)
-                    flip_pixel(x2, y)
-
-                x2 = new_x2
-                y2 = new_y2
-    
-                x_inc = 1 if x1 < x2 else -1
-                y_inc = 1 if y1 < y2 else -1
-                for x in range(x1, x2, x_inc):
-                    flip_pixel(x, y1)
-                    flip_pixel(x, y2)
-                for y in range(y1, y2, y_inc):
-                    flip_pixel(x1, y)
-                    flip_pixel(x2, y)
+            elif (event.type == pygame.MOUSEMOTION) and (selecting_zoom_area) :    
+                # Flip the existing rectangle to remove it
+                flip_rect(x1, x2, y1, y2, 1 if x1 < x2 else -1, 1 if y1 < y2 else -1)                
+                # Get the new (x2, y2) corner
+                (x2, y2) = pygame.mouse.get_pos()
+                # Make sure y2 is no lower than the bottom of the canvas
+                y2 = min(CANVAS_HEIGHT - 1, y2)
+                # Draw the new rectangle with a new (x2, y2) corner
+                flip_rect(x1, x2, y1, y2, 1 if x1 < x2 else -1, 1 if y1 < y2 else -1)
 
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 (mouse_x, mouse_y) = pygame.mouse.get_pos()
                 if (mouse_y < CANVAS_HEIGHT):
-                    print("setting x and y")
+                    # If x1, y1, x2, y2 are all -1, then we have already drawn an rectangle on screen
+                    # Draw it again to overwrite it before we draw a new one
+                    if (x1 != -1) and (x2 != -1) and (y1 != -1) and (y2 != -1):
+                        flip_rect(x1, x2, y1, y2, 1 if x1 < x2 else -1, 1 if y1 < y2 else -1)
+                
                     x1 = x2 = mouse_x
                     y1 = y2 = mouse_y                    
                     selecting_zoom_area = True
