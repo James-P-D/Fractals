@@ -5,7 +5,7 @@ from Constants import *
 from UIControls import *
 import datetime
 import colorsys
-from Mandlebrot import draw_mandlebrot
+from MandlebrotFractal import draw_mandlebrot
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
