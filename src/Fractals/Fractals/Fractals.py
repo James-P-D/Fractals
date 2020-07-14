@@ -225,6 +225,7 @@ def dec_zoom_button_clicked():
 ###############################################
 
 def draw_ui():
+    pygame.display.set_caption("Fractals")
     screen.fill(BLACK)
     mandlebrot_button.draw(screen)
     julia_button.draw(screen)

@@ -1,8 +1,5 @@
-CANVAS_WIDTH = 800
-CANVAS_HEIGHT = 400
-
-#CANVAS_WIDTH = 1500
-#CANVAS_HEIGHT = 800
+CANVAS_WIDTH = 500
+CANVAS_HEIGHT = 300
 
 BUTTON_HEIGHT = 50
 
@@ -50,7 +47,7 @@ BUTTON_LABEL_COLOR = WHITE
 
 BUTTON_BORDER_SIZE = 2
 
-BUTTON_FONT_SIZE = 20
+BUTTON_FONT_SIZE = 15
 
 ###############################################
 # Zooming
@@ -76,7 +73,7 @@ MANDLEBROT_MIN_Y = -1.0
 MANDLEBROT_MAX_X = 1.0
 MANDLEBROT_MAX_Y = 1.0
 
-MANDLEBROT_ITERATIONS = 250
+MANDLEBROT_ITERATIONS = 100
 
 ###############################################
 # Julia Fractal
@@ -87,7 +84,7 @@ JULIA_MIN_Y = -1.0
 JULIA_MAX_X = 1.5
 JULIA_MAX_Y = 1.0
 
-JULIA_ITERATIONS = 250
+JULIA_ITERATIONS = 100
 
 ###############################################
 # PyGame
