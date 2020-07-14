@@ -53,7 +53,7 @@ BUTTON_FONT_SIZE = 15
 # Zooming
 ###############################################
 
-MIN_ZOOM_STEPS = 1
+MIN_ZOOM_STEPS = 0
 MAX_ZOOM_STEPS = 100
 
 ###############################################
