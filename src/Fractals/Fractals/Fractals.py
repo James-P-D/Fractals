@@ -181,16 +181,11 @@ def zoom_button_clicked():
     global min_x, min_y, max_x, max_y    
     x_pixel_diff = (max_x - min_x) / CANVAS_WIDTH
     y_pixel_diff = (max_y - min_y) / CANVAS_HEIGHT
-
-    new_min_x = (zoom_x1 * x_pixel_diff) + min_x
-    new_min_y = (zoom_y1 * y_pixel_diff) + min_y
-    new_max_x = (zoom_x2 * x_pixel_diff) + min_x
-    new_max_y = (zoom_y2 * y_pixel_diff) + min_y
-
-    x1_zoom_step = (new_min_x - min_x) / (zoom_steps + 1)
-    y1_zoom_step = (new_min_y - min_y) / (zoom_steps + 1)
-    x2_zoom_step = (max_x - new_max_x) / (zoom_steps + 1)
-    y2_zoom_step = (max_y - new_max_y) / (zoom_steps + 1)
+    
+    x1_zoom_step = ((zoom_x1 * x_pixel_diff)) / (zoom_steps + 1)
+    y1_zoom_step = ((zoom_y1 * y_pixel_diff)) / (zoom_steps + 1)
+    x2_zoom_step = (max_x - ((zoom_x2 * x_pixel_diff) + min_x)) / (zoom_steps + 1)
+    y2_zoom_step = (max_y - ((zoom_y2 * y_pixel_diff) + min_y)) / (zoom_steps + 1)
 
     for step in range(zoom_steps + 1):
         min_x += x1_zoom_step
