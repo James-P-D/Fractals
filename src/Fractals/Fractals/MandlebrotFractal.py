@@ -13,6 +13,7 @@ def calc_mandelbrot(x, y, iterations):
     return 0
 
 def draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen):
+    pixels = np.ndarray((CANVAS_WIDTH, CANVAS_HEIGHT), int)
     x_pixel_diff = (max_x - min_x) / CANVAS_WIDTH
     y_pixel_diff = (max_y - min_y) / CANVAS_HEIGHT
 
@@ -20,8 +21,12 @@ def draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen):
     for x in range(CANVAS_WIDTH):  
         for y in range(CANVAS_HEIGHT): 
             i = calc_mandelbrot((x * x_pixel_diff) + min_x, (y * y_pixel_diff) + min_y, MANDLEBROT_ITERATIONS)            
-            screen.set_at((x, y), (i << 21) + (i << 10) + i*8)        
-            
+            pixels[x,y] = (i << 21) + (i << 10) + i * 8
+    
+    new_surface = pygame.surfarray.make_surface(pixels)
+    screen.blit(new_surface, (0, 0))
+    pygame.display.flip()
+                
     end_time = datetime.datetime.now()
     diff = end_time - start_time
     print(diff.seconds, "s")
