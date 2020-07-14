@@ -2,29 +2,18 @@ import datetime
 import pygame
 import numpy as np
 from Constants import *
-  
-def calc_julia(x, y, iterations): 
-    pass
-
-def calc_x(x):
-    return 1.5*(x - CANVAS_WIDTH/2)/(0.5*CANVAS_WIDTH) 
-
-def calc_y(y):
-    return 1.0*(y - CANVAS_HEIGHT/2)/(0.5*CANVAS_HEIGHT)
 
 def draw_julia_fractal(min_x, min_y, max_x, max_y, screen):
     cX, cY = -0.7, 0.27015
     maxIter = JULIA_ITERATIONS
    
-    print(f"x = 0 -> {calc_x(0)}")
-    print(f"x = {CANVAS_WIDTH} -> {calc_x(CANVAS_WIDTH)}")
-    print(f"y = 0 -> {calc_y(0)}")
-    print(f"y = {CANVAS_HEIGHT} -> {calc_y(CANVAS_HEIGHT)}")
+    x_pixel_diff = (max_x - min_x) / CANVAS_WIDTH
+    y_pixel_diff = (max_y - min_y) / CANVAS_HEIGHT
 
     for x in range(CANVAS_WIDTH): 
         for y in range(CANVAS_HEIGHT): 
-            zx = calc_x(x)
-            zy = calc_y(y)
+            zx = (x * x_pixel_diff) + min_x
+            zy = (y * y_pixel_diff) + min_y
             i = maxIter 
             while zx*zx + zy*zy < 4 and i > 1: 
                 tmp = zx*zx - zy*zy + cX 
