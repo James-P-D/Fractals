@@ -1,18 +1,18 @@
 import pygame # Tested with pygame v1.9.6
 import numpy as np
-#from numpy import complex, array 
+import datetime
 from Constants import *
 from UIControls import *
-import datetime
-import colorsys
-from MandlebrotFractal import draw_mandlebrot
+from MandlebrotFractal import draw_mandlebrot_fractal
+from JuliaFractal import draw_julia_fractal
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 zoom_steps = MIN_ZOOM_STEPS
 
 mandlebrot_button = Button((LARGE_BUTTON_WIDTH * 0), BUTTON_STRIP_TOP, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, MANDLEBROT_BUTTON_LABEL)
-zoom_button = Button((LARGE_BUTTON_WIDTH * 1), BUTTON_STRIP_TOP, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, ZOOM_BUTTON_LABEL.format(zoom_steps))
+julia_button = Button((LARGE_BUTTON_WIDTH * 1), BUTTON_STRIP_TOP, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, JULIA_BUTTON_LABEL)
+zoom_button = Button((LARGE_BUTTON_WIDTH * 2), BUTTON_STRIP_TOP, LARGE_BUTTON_WIDTH, LARGE_BUTTON_HEIGHT, ZOOM_BUTTON_LABEL.format(zoom_steps))
 inc_zoom_button = Button((SMALL_BUTTON_WIDTH * 0) + (LARGE_BUTTON_WIDTH * TOTAL_LARGE_BUTTONS), BUTTON_STRIP_TOP, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, ZOOM_INC_BUTTON_LABEL)
 dec_zoom_button = Button((SMALL_BUTTON_WIDTH * 1) + (LARGE_BUTTON_WIDTH * TOTAL_LARGE_BUTTONS), BUTTON_STRIP_TOP, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, ZOOM_DEC_BUTTON_LABEL)
 
@@ -83,6 +83,8 @@ def game_loop():
                     selecting_zoom_area = True                    
                 elif (mandlebrot_button.is_over(mouse_x, mouse_y)):
                     mandlebrot_button_clicked()
+                elif (julia_button.is_over(mouse_x, mouse_y)):
+                    julia_button_clicked()
                 elif (zoom_button.is_over(mouse_x, mouse_y)):
                     zoom_button_clicked()
                 elif (inc_zoom_button.is_over(mouse_x, mouse_y)):
@@ -123,7 +125,7 @@ def game_loop():
 
 def mandlebrot_button_clicked():    
     global current_fractal
-    current_fractal = MANDLEBROT
+    current_fractal = MANDLEBROT_FRACTAL
 
     global zoom_x1, zoom_y1, zoom_x2, zoom_y2
     (zoom_x1, zoom_y1, zoom_x2, zoom_y2) = (0, 0, 0, 0)
@@ -134,8 +136,27 @@ def mandlebrot_button_clicked():
     global min_x, min_y, max_x, max_y
     (min_x, min_y, max_x, max_y) = (MANDLEBROT_MIN_X, MANDLEBROT_MIN_Y, MANDLEBROT_MAX_X, MANDLEBROT_MAX_Y)
     
-    draw_mandlebrot(min_x, min_y, max_x, max_y, screen)
-   
+    draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen)
+
+###############################################
+# julia_button_clicked()
+###############################################
+
+def julia_button_clicked():
+    global current_fractal
+    current_fractal = JULIA_FRACTAL
+
+    global zoom_x1, zoom_y1, zoom_x2, zoom_y2
+    (zoom_x1, zoom_y1, zoom_x2, zoom_y2) = (0, 0, 0, 0)
+    
+    global zoom_set
+    zoom_set = False
+
+    global min_x, min_y, max_x, max_y
+    (min_x, min_y, max_x, max_y) = (JULIA_MIN_X, JULIA_MIN_Y, JULIA_MAX_X, JULIA_MAX_Y)
+    
+    draw_julia_fractal(min_x, min_y, max_x, max_y, screen)
+    
 ###############################################
 # zoom_button_clicked()
 ###############################################
@@ -172,7 +193,10 @@ def zoom_button_clicked():
 
     print((min_x, min_y, max_x, max_y))
 
-    draw_mandlebrot(min_x, min_y, max_x, max_y, screen)
+    if (current_fractal == MANDLEBROT_FRACTAL):
+        draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen)
+    elif (current_fractal == JULIA_FRACTAL):
+        draw_julia_fractal(min_x, min_y, max_x, max_y, screen)
 
     zoom_set = False
 
@@ -203,10 +227,10 @@ def dec_zoom_button_clicked():
 def draw_ui():
     screen.fill(BLACK)
     mandlebrot_button.draw(screen)
+    julia_button.draw(screen)
     zoom_button.draw(screen)
     inc_zoom_button.draw(screen)
-    dec_zoom_button.draw(screen)
-    
+    dec_zoom_button.draw(screen)    
 
 ###############################################
 # main()

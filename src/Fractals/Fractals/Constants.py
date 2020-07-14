@@ -1,5 +1,5 @@
-CANVAS_WIDTH = 500
-CANVAS_HEIGHT = 250
+CANVAS_WIDTH = 800
+CANVAS_HEIGHT = 400
 
 #CANVAS_WIDTH = 1500
 #CANVAS_HEIGHT = 800
@@ -29,7 +29,7 @@ YELLOW = (255, 255, 0)
 BUTTON_STRIP_TOP = CANVAS_HEIGHT
 
 TOTAL_SMALL_BUTTONS = 2
-TOTAL_LARGE_BUTTONS = 2
+TOTAL_LARGE_BUTTONS = 3
 
 SMALL_BUTTON_HEIGHT = BUTTON_HEIGHT
 SMALL_BUTTON_WIDTH = SMALL_BUTTON_HEIGHT
@@ -38,6 +38,8 @@ LARGE_BUTTON_HEIGHT = BUTTON_HEIGHT
 LARGE_BUTTON_WIDTH = (WINDOW_WIDTH - (SMALL_BUTTON_WIDTH * TOTAL_SMALL_BUTTONS)) / TOTAL_LARGE_BUTTONS
 
 MANDLEBROT_BUTTON_LABEL = "Mandlebrot"
+JULIA_BUTTON_LABEL = "Julia"
+
 ZOOM_BUTTON_LABEL = "Zoom Steps: {0}"
 ZOOM_INC_BUTTON_LABEL = "+"
 ZOOM_DEC_BUTTON_LABEL = "-"
@@ -62,10 +64,11 @@ MAX_ZOOM_STEPS = 100
 ###############################################
 
 NO_FRACTAL = 0
-MANDLEBROT = 1
+MANDLEBROT_FRACTAL = 1
+JULIA_FRACTAL = 2
 
 ###############################################
-# Mandlebrot
+# Mandlebrot Fractal
 ###############################################
 
 MANDLEBROT_MIN_X = -3.0
@@ -74,6 +77,17 @@ MANDLEBROT_MAX_X = 1.0
 MANDLEBROT_MAX_Y = 1.0
 
 MANDLEBROT_ITERATIONS = 255
+
+###############################################
+# Julia Fractal
+###############################################
+
+JULIA_MIN_X = -1.5
+JULIA_MIN_Y = -1.0
+JULIA_MAX_X = 1.5
+JULIA_MAX_Y = 1.0
+
+JULIA_ITERATIONS = 255
 
 ###############################################
 # PyGame

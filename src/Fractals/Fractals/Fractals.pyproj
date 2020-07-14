@@ -21,6 +21,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="JuliaFractal.py" />
     <Compile Include="MandlebrotFractal.py">
       <SubType>Code</SubType>
     </Compile>
