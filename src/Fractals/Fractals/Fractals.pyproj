@@ -21,6 +21,9 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Mandlebrot.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="UIControls.py" />
     <Compile Include="Constants.py">
       <SubType>Code</SubType>
