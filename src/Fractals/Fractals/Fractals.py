@@ -182,21 +182,26 @@ def zoom_button_clicked():
     x_pixel_diff = (max_x - min_x) / CANVAS_WIDTH
     y_pixel_diff = (max_y - min_y) / CANVAS_HEIGHT
 
-    print((min_x, min_y, max_x, max_y))
+    new_min_x = (zoom_x1 * x_pixel_diff) + min_x
+    new_min_y = (zoom_y1 * y_pixel_diff) + min_y
+    new_max_x = (zoom_x2 * x_pixel_diff) + min_x
+    new_max_y = (zoom_y2 * y_pixel_diff) + min_y
 
-    original_min_x = min_x
-    original_min_y = min_y
-    min_x = (zoom_x1 * x_pixel_diff) + original_min_x
-    min_y = (zoom_y1 * y_pixel_diff) + original_min_y
-    max_x = (zoom_x2 * x_pixel_diff) + original_min_x
-    max_y = (zoom_y2 * y_pixel_diff) + original_min_y
+    x1_zoom_step = (new_min_x - min_x) / (zoom_steps + 1)
+    y1_zoom_step = (new_min_y - min_y) / (zoom_steps + 1)
+    x2_zoom_step = (max_x - new_max_x) / (zoom_steps + 1)
+    y2_zoom_step = (max_y - new_max_y) / (zoom_steps + 1)
 
-    print((min_x, min_y, max_x, max_y))
-
-    if (current_fractal == MANDLEBROT_FRACTAL):
-        draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen)
-    elif (current_fractal == JULIA_FRACTAL):
-        draw_julia_fractal(min_x, min_y, max_x, max_y, screen)
+    for step in range(zoom_steps + 1):
+        min_x += x1_zoom_step
+        min_y += y1_zoom_step
+        max_x -= x2_zoom_step
+        max_y -= y2_zoom_step
+        print(f"Zoom step {step+1} of {zoom_steps + 1}")
+        if (current_fractal == MANDLEBROT_FRACTAL):        
+            draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen)
+        elif (current_fractal == JULIA_FRACTAL):
+            draw_julia_fractal(min_x, min_y, max_x, max_y, screen)
 
     zoom_set = False
 

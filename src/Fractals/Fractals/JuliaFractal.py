@@ -31,4 +31,4 @@ def draw_julia_fractal(min_x, min_y, max_x, max_y, screen):
 
     end_time = datetime.datetime.now()
     diff = end_time - start_time
-    print(diff.seconds, "s")
+    print("Julia fractal generated in ", diff.seconds, "s")

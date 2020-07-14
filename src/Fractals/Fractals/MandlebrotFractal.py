@@ -29,4 +29,4 @@ def draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen):
                 
     end_time = datetime.datetime.now()
     diff = end_time - start_time
-    print(diff.seconds, "s")
+    print("Mandlebrot fractal generated in ", diff.seconds, "s")
