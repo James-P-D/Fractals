@@ -14,7 +14,7 @@ def calc_y(y):
 
 def draw_julia_fractal(min_x, min_y, max_x, max_y, screen):
     cX, cY = -0.7, 0.27015
-    maxIter = 255
+    maxIter = JULIA_ITERATIONS
    
     print(f"x = 0 -> {calc_x(0)}")
     print(f"x = {CANVAS_WIDTH} -> {calc_x(CANVAS_WIDTH)}")

@@ -18,11 +18,9 @@ def draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen):
 
     start_time = datetime.datetime.now()
     for x in range(CANVAS_WIDTH):  
-        # displaying the progress as percentage 
-        #print("%.2f %%" % (x / CANVAS_WIDTH * 100.0))  
         for y in range(CANVAS_HEIGHT): 
             i = calc_mandelbrot((x * x_pixel_diff) + min_x, (y * y_pixel_diff) + min_y, MANDLEBROT_ITERATIONS)            
-            screen.set_at((x, y), (i << 21) + (i << 10) + i*8)
+            screen.set_at((x, y), (i << 21) + (i << 10) + i*8)        
     end_time = datetime.datetime.now()
     diff = end_time - start_time
     print(diff.seconds, "s")

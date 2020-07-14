@@ -76,7 +76,7 @@ MANDLEBROT_MIN_Y = -1.0
 MANDLEBROT_MAX_X = 1.0
 MANDLEBROT_MAX_Y = 1.0
 
-MANDLEBROT_ITERATIONS = 255
+MANDLEBROT_ITERATIONS = 250
 
 ###############################################
 # Julia Fractal
@@ -87,7 +87,7 @@ JULIA_MIN_Y = -1.0
 JULIA_MAX_X = 1.5
 JULIA_MAX_Y = 1.0
 
-JULIA_ITERATIONS = 255
+JULIA_ITERATIONS = 250
 
 ###############################################
 # PyGame
