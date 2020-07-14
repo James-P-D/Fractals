@@ -1,5 +1,5 @@
-CANVAS_WIDTH = 1000
-CANVAS_HEIGHT = 500
+CANVAS_WIDTH = 500
+CANVAS_HEIGHT = 250
 BUTTON_HEIGHT = 50
 
 WINDOW_WIDTH = CANVAS_WIDTH
@@ -52,6 +52,24 @@ BUTTON_FONT_SIZE = 20
 
 MIN_ZOOM_STEPS = 1
 MAX_ZOOM_STEPS = 100
+
+###############################################
+# Fractal Types
+###############################################
+
+NO_FRACTAL = 0
+MANDLEBROT = 1
+
+###############################################
+# Mandlebrot
+###############################################
+
+MANDLEBROT_MIN_X = -3.0
+MANDLEBROT_MIN_Y = -1.0
+MANDLEBROT_MAX_X = 1.0
+MANDLEBROT_MAX_Y = 1.0
+
+MANDLEBROT_ITERATIONS = 50
 
 ###############################################
 # PyGame
