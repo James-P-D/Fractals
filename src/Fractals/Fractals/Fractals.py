@@ -7,6 +7,10 @@ from MandlebrotFractal import mandlebrot_fractal
 from JuliaFractal import julia_fractal
 import threading
 
+###############################################
+# Globals
+###############################################
+
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
 zoom_steps = MIN_ZOOM_STEPS
@@ -144,7 +148,13 @@ def mandlebrot_button_clicked():
     (min_x, min_y, max_x, max_y) = (MANDLEBROT_MIN_X, MANDLEBROT_MIN_Y, MANDLEBROT_MAX_X, MANDLEBROT_MAX_Y)
     
     start_time = datetime.datetime.now()
-    draw_fractal(mandlebrot_fractal(min_x, min_y, max_x, max_y))
+    if (USE_JULIA):
+        from julia import Main
+        Main.include('library.jl')        
+        draw_fractal(Main.mandlebrot_fractal(min_x, min_y, max_x, max_y, CANVAS_WIDTH, CANVAS_HEIGHT, MANDLEBROT_ITERATIONS))
+        print("Done!")
+    else:
+        draw_fractal(mandlebrot_fractal(min_x, min_y, max_x, max_y))
     end_time = datetime.datetime.now()
     diff = end_time - start_time
     print("Fractal generated in ", diff.seconds, "s")
