@@ -92,7 +92,7 @@ JULIA_ITERATIONS = 100
 # Julia/Python language
 ###############################################
 
-USE_JULIA = True
+USE_JULIA = False
 
 ###############################################
 # PyGame
