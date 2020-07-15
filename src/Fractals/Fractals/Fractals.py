@@ -3,8 +3,8 @@ import numpy as np
 import datetime
 from Constants import *
 from UIControls import *
-from MandlebrotFractal import draw_mandlebrot_fractal
-from JuliaFractal import draw_julia_fractal
+from MandlebrotFractal import mandlebrot_fractal
+from JuliaFractal import julia_fractal
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
@@ -136,7 +136,11 @@ def mandlebrot_button_clicked():
     global min_x, min_y, max_x, max_y
     (min_x, min_y, max_x, max_y) = (MANDLEBROT_MIN_X, MANDLEBROT_MIN_Y, MANDLEBROT_MAX_X, MANDLEBROT_MAX_Y)
     
-    draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen)
+    start_time = datetime.datetime.now()
+    draw_fractal(mandlebrot_fractal(min_x, min_y, max_x, max_y))
+    end_time = datetime.datetime.now()
+    diff = end_time - start_time
+    print("Fractal generated in ", diff.seconds, "s")
 
 ###############################################
 # julia_button_clicked()
@@ -155,7 +159,11 @@ def julia_button_clicked():
     global min_x, min_y, max_x, max_y
     (min_x, min_y, max_x, max_y) = (JULIA_MIN_X, JULIA_MIN_Y, JULIA_MAX_X, JULIA_MAX_Y)
     
-    draw_julia_fractal(min_x, min_y, max_x, max_y, screen)
+    start_time = datetime.datetime.now()
+    draw_fractal(julia_fractal(min_x, min_y, max_x, max_y))
+    end_time = datetime.datetime.now()
+    diff = end_time - start_time
+    print("Fractal generated in ", diff.seconds, "s")
     
 ###############################################
 # zoom_button_clicked()
@@ -193,12 +201,23 @@ def zoom_button_clicked():
         max_x -= x2_zoom_step
         max_y -= y2_zoom_step
         print(f"Zoom step {step+1} of {zoom_steps + 1}")
+        start_time = datetime.datetime.now()
+
         if (current_fractal == MANDLEBROT_FRACTAL):        
-            draw_mandlebrot_fractal(min_x, min_y, max_x, max_y, screen)
+            draw_fractal(mandlebrot_fractal(min_x, min_y, max_x, max_y))
         elif (current_fractal == JULIA_FRACTAL):
-            draw_julia_fractal(min_x, min_y, max_x, max_y, screen)
+            draw_fractal(julia_fractal(min_x, min_y, max_x, max_y))
+                
+        end_time = datetime.datetime.now()
+        diff = end_time - start_time
+        print("Fractal generated in ", diff.seconds, "s")
 
     zoom_set = False
+
+def draw_fractal(pixels):
+    new_surface = pygame.surfarray.make_surface(pixels)
+    screen.blit(new_surface, (0, 0))
+    pygame.display.flip()
 
 ###############################################
 # inc_zoom_button_clicked()
