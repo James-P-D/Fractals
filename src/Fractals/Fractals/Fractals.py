@@ -5,6 +5,7 @@ from Constants import *
 from UIControls import *
 from MandlebrotFractal import mandlebrot_fractal
 from JuliaFractal import julia_fractal
+import threading
 
 screen = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
 
@@ -16,6 +17,7 @@ zoom_button = Button((LARGE_BUTTON_WIDTH * 2), BUTTON_STRIP_TOP, LARGE_BUTTON_WI
 inc_zoom_button = Button((SMALL_BUTTON_WIDTH * 0) + (LARGE_BUTTON_WIDTH * TOTAL_LARGE_BUTTONS), BUTTON_STRIP_TOP, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, ZOOM_INC_BUTTON_LABEL)
 dec_zoom_button = Button((SMALL_BUTTON_WIDTH * 1) + (LARGE_BUTTON_WIDTH * TOTAL_LARGE_BUTTONS), BUTTON_STRIP_TOP, SMALL_BUTTON_WIDTH, SMALL_BUTTON_HEIGHT, ZOOM_DEC_BUTTON_LABEL)
 
+processing = False
 zoom_set = False
 (min_x, min_y, max_x, max_y) = (0, 0, 0, 0)
 (zoom_x1, zoom_y1, zoom_x2, zoom_y2) = (0, 0, 0, 0)
@@ -41,7 +43,6 @@ def game_loop():
             flip_pixel(x1, y)
             flip_pixel(x2, y)
 
-
     game_exit = False
     clock = pygame.time.Clock()
 
@@ -55,9 +56,9 @@ def game_loop():
     while not game_exit:
         pygame.mouse.get_pos()
         for event in pygame.event.get():
-            if event.type == pygame.QUIT:
+            if (event.type == pygame.QUIT) and (not processing):
                 game_exit = True;
-            elif (event.type == pygame.MOUSEMOTION) and (selecting_zoom_area) :    
+            elif (event.type == pygame.MOUSEMOTION) and (selecting_zoom_area) and (not processing):    
                 # Flip the existing rectangle to remove it
                 flip_rect(zoom_x1, zoom_x2, zoom_y1, zoom_y2, 1 if zoom_x1 < zoom_x2 else -1, 1 if zoom_y1 < zoom_y2 else -1)                
                 # Get the new (zoom_x2, zoom_y2) corner
@@ -69,7 +70,7 @@ def game_loop():
                 # Finally set the zoom_set flag
                 zoom_set = True
 
-            elif event.type == pygame.MOUSEBUTTONDOWN:
+            elif (event.type == pygame.MOUSEBUTTONDOWN) and (not processing):
                 (mouse_x, mouse_y) = pygame.mouse.get_pos()
                 if (mouse_y < CANVAS_HEIGHT):
                     # If zoom_x1, zoom_y1, zoom_x2, zoom_y2 are all nan, then we have already drawn an rectangle on screen
@@ -82,11 +83,14 @@ def game_loop():
                     zoom_y1 = zoom_y2 = mouse_y                    
                     selecting_zoom_area = True                    
                 elif (mandlebrot_button.is_over(mouse_x, mouse_y)):
-                    mandlebrot_button_clicked()
+                    thread = threading.Thread(target = mandlebrot_button_clicked, args = ())
+                    thread.start()                    
                 elif (julia_button.is_over(mouse_x, mouse_y)):
-                    julia_button_clicked()
+                    thread = threading.Thread(target = julia_button_clicked, args = ())
+                    thread.start()                    
                 elif (zoom_button.is_over(mouse_x, mouse_y)):
-                    zoom_button_clicked()
+                    thread = threading.Thread(target = zoom_button_clicked, args = ())
+                    thread.start()                    
                 elif (inc_zoom_button.is_over(mouse_x, mouse_y)):
                     # Call inc_zoom_button_clicked() to increment our zoom step by 1
                     inc_zoom_button_clicked()
@@ -101,16 +105,16 @@ def game_loop():
                     clicking_dec_zoom = True
                     # Don't auto-decrement the zoom step unless button has been held down for 1 full second
                     next_dec_zoom_time = datetime.datetime.now() + datetime.timedelta(0, 1)
-            elif event.type == pygame.MOUSEBUTTONUP:
+            elif (event.type == pygame.MOUSEBUTTONUP) and (not processing):
                 selecting_zoom_area = False
                 clicking_inc_zoom = False
                 clicking_dec_zoom = False
             
-        if clicking_inc_zoom and (datetime.datetime.now() > next_inc_zoom_time):
+        if clicking_inc_zoom and (datetime.datetime.now() > next_inc_zoom_time) and (not processing):
             inc_zoom_button_clicked()
             # For any future increments, only wait 500ms
             next_inc_zoom_time = datetime.datetime.now() + datetime.timedelta(0, 0, 500)
-        elif clicking_dec_zoom and (datetime.datetime.now() > next_dec_zoom_time):
+        elif clicking_dec_zoom and (datetime.datetime.now() > next_dec_zoom_time) and (not processing):
             dec_zoom_button_clicked()
             # For any future decrements, only wait 500ms
             next_dec_zoom_time = datetime.datetime.now() + datetime.timedelta(0, 0, 500)
@@ -124,6 +128,9 @@ def game_loop():
 ###############################################
 
 def mandlebrot_button_clicked():    
+    global processing
+    processing = True
+
     global current_fractal
     current_fractal = MANDLEBROT_FRACTAL
 
@@ -141,12 +148,17 @@ def mandlebrot_button_clicked():
     end_time = datetime.datetime.now()
     diff = end_time - start_time
     print("Fractal generated in ", diff.seconds, "s")
+    
+    processing = False
 
 ###############################################
 # julia_button_clicked()
 ###############################################
 
 def julia_button_clicked():
+    global processing
+    processing = True
+
     global current_fractal
     current_fractal = JULIA_FRACTAL
 
@@ -165,6 +177,8 @@ def julia_button_clicked():
     diff = end_time - start_time
     print("Fractal generated in ", diff.seconds, "s")
     
+    processing = False
+    
 ###############################################
 # zoom_button_clicked()
 ###############################################
@@ -179,6 +193,9 @@ def zoom_button_clicked():
     if (not zoom_set):
         print("You need to draw a square first")
         return
+
+    global processing
+    processing = True
 
     global zoom_x1, zoom_y1, zoom_x2, zoom_y2
     if (zoom_x2 < zoom_x1):
@@ -213,6 +230,7 @@ def zoom_button_clicked():
         print("Fractal generated in ", diff.seconds, "s")
 
     zoom_set = False
+    processing = False
 
 def draw_fractal(pixels):
     new_surface = pygame.surfarray.make_surface(pixels)
