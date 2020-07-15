@@ -182,7 +182,13 @@ def julia_button_clicked():
     (min_x, min_y, max_x, max_y) = (JULIA_MIN_X, JULIA_MIN_Y, JULIA_MAX_X, JULIA_MAX_Y)
     
     start_time = datetime.datetime.now()
-    draw_fractal(julia_fractal(min_x, min_y, max_x, max_y))
+    if (USE_JULIA):
+        from julia import Main
+        Main.include('library.jl')        
+        draw_fractal(Main.julia_fractal(min_x, min_y, max_x, max_y, CANVAS_WIDTH, CANVAS_HEIGHT, MANDLEBROT_ITERATIONS))
+        print("Done!")
+    else:        
+        draw_fractal(julia_fractal(min_x, min_y, max_x, max_y))
     end_time = datetime.datetime.now()
     diff = end_time - start_time
     print("Fractal generated in ", diff.seconds, "s")
