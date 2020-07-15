@@ -127,3 +127,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+/src/Fractals/.vs/Fractals/v16/*.suo
