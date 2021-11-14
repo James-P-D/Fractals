@@ -15,7 +15,7 @@ By default the application will zoom straight to the selected section. If you wo
 
 When I first created the application, both fractals were calculated in Python (see [MandlebrotFractal.py](https://github.com/James-P-D/Fractals/blob/master/src/Fractals/Fractals/MandlebrotFractal.py) and [JuliaFractal.py](https://github.com/James-P-D/Fractals/blob/master/src/Fractals/Fractals/JuliaFractal.py)) but was disappointed with the time taken to generate them. Since I'd heard [Julia](https://julialang.org/) is fast I decided to reimplement both fractals. Whilst the code works (see [Library.jl](https://github.com/James-P-D/Fractals/blob/master/src/Fractals/Fractals/Library.jl)), it doesn't appear to like being called on a thread, so this has been temporarily disabled.
 
-If you want to try using the Julia-generated fractals, set `USE_JULIA` to `False` in [Constants.py](https://github.com/James-P-D/Fractals/blob/master/src/Fractals/Fractals/Constants.py).
+If you want to try using the Julia-generated fractals, set `USE_JULIA` to `True` in [Constants.py](https://github.com/James-P-D/Fractals/blob/master/src/Fractals/Fractals/Constants.py).
 
 ## Setup
 
